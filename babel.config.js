@@ -9,6 +9,7 @@ module.exports = function (api) {
 					alias: {
 						'@hooks': './hooks',
 						'@lib': './lib',
+						'@components': './components',
 					},
 				},
 			],
