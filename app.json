@@ -1,0 +1,12 @@
+{
+  "name": "pokelist",
+  "displayName": "pokelist",
+  "expo": {
+    "name": "pokelist",
+    "slug": "pokelist",
+    "version": "1.0.0",
+    "assetBundlePatterns": [
+      "**/*"
+    ]
+  }
+}
