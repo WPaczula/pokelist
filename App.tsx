@@ -1,23 +1,13 @@
 import React from 'react'
-import { StyleSheet, Text, View } from 'react-native'
-import usePokemons from '@hooks/usePokemons'
-import Loading from '@components/loading'
+import { QueryClientProvider, QueryClient } from 'react-query'
+import PokemonList from '@components/pokemon-list'
+
+const queryClient = new QueryClient()
 
 export default function App() {
-	const { loading, pokemons } = usePokemons()
-
-	if (loading) {
-		return <Loading />
-	}
-
-	return <View style={styles.container}>{!loading && pokemons.map((p) => <Text key={p.number}>{p.name}</Text>)}</View>
+	return (
+		<QueryClientProvider client={queryClient}>
+			<PokemonList />
+		</QueryClientProvider>
+	)
 }
-
-const styles = StyleSheet.create({
-	container: {
-		flex: 1,
-		backgroundColor: '#fff',
-		alignItems: 'center',
-		justifyContent: 'center',
-	},
-})

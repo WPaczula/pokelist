@@ -10,6 +10,7 @@ module.exports = function (api) {
 						'@hooks': './hooks',
 						'@lib': './lib',
 						'@components': './components',
+						'@declarations': './declarations',
 					},
 				},
 			],

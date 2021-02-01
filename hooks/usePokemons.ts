@@ -1,23 +1,13 @@
-import { useState, useEffect } from 'react'
-import { fetchPokemonInfo, PokemonInfo } from '@lib/api'
+import { fetchPokemonInfo } from '@lib/api'
+import { useQuery } from 'react-query'
 
-const usePokemons = () => {
-	const [pokemons, setPokemons] = useState<PokemonInfo[]>([])
-
-	useEffect(() => {
-		const loadPokemons = async () => {
-			const pokemons = await fetchPokemonInfo()
-
-			setPokemons(pokemons)
-		}
-
-		loadPokemons()
-	}, [])
+const usePokemon = (number: number) => {
+	const { data, isLoading } = useQuery(['pokemon', number], () => fetchPokemonInfo(number), { refetchOnMount: false })
 
 	return {
-		loading: pokemons.length === 0,
-		pokemons,
+		loading: isLoading,
+		data,
 	}
 }
 
-export default usePokemons
+export default usePokemon

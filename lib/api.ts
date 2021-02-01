@@ -1,26 +1,22 @@
-const baseUrl = 'https://graphql-pokemon2.vercel.app'
+import { PokemonInfo } from '@declarations/pokemon-info'
 
-export interface PokemonInfo {
-	number: number
+const baseUrl = 'https://pokeapi.co/api/v2'
+
+interface PokemonDto {
 	name: string
-	image: string
+	sprites: {
+		front_default: string
+	}
 }
 
-const getPokemonsQuery = `
-query pokemons {
-    pokemons(first: 151) {
-      number
-      name
-      image
-    }
-}`
-
-export const fetchPokemonInfo = (): Promise<PokemonInfo[]> => {
-	return fetch(`${baseUrl}/${name}`, {
-		method: 'POST',
+export const fetchPokemonInfo = (number: number): Promise<PokemonInfo> => {
+	return fetch(`${baseUrl}/pokemon/${number}`, {
 		headers: { 'Content-Type': 'application/json' },
-		body: JSON.stringify({ query: getPokemonsQuery }),
 	})
 		.then((data) => data.json())
-		.then(({ data }) => data.pokemons)
+		.then(({ name, sprites }: PokemonDto) => ({
+			name,
+			number,
+			image: sprites.front_default,
+		}))
 }

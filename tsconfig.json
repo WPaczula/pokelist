@@ -12,7 +12,8 @@
 		"paths": {
 			"@lib/*": ["./lib/*"],
 			"@hooks/*": ["./hooks/*"],
-			"@components/*": ["./components/*"]
+			"@components/*": ["./components/*"],
+			"@declarations/*": ["declarations/*"]
 		}
 	}
 }
