@@ -33,10 +33,14 @@ const PokemonList = () => {
 					const inputRange = [(item - 2) * ITEM_SIZE, (item - 1) * ITEM_SIZE, item * ITEM_SIZE]
 					const translateY = scrollX.interpolate({
 						inputRange,
-						outputRange: [0, -50, 0],
+						outputRange: [10, -50, 10],
+					})
+					const scale = scrollX.interpolate({
+						inputRange,
+						outputRange: [1, 1.25, 1],
 					})
 					return (
-						<Animated.View style={{ transform: [{ translateY }] }}>
+						<Animated.View style={{ transform: [{ translateY }, { scale }] }}>
 							<PokemonCard number={item} />
 						</Animated.View>
 					)
