@@ -21,13 +21,19 @@ const PokemonCard = ({ number }: Props) => {
 		<View style={styles.card}>
 			<View style={styles.container}>
 				<Image source={{ uri: data.image }} style={styles.image} />
-				<Text>{data.name}</Text>
+				<Text style={styles.name}>{data.name}</Text>
 			</View>
 		</View>
 	)
 }
 
 const styles = StyleSheet.create({
+	name: {
+		textTransform: 'uppercase',
+		fontFamily: 'sans-serif',
+		fontSize: 14,
+		letterSpacing: 2,
+	},
 	card: {
 		width: ITEM_SIZE,
 		height: ITEM_SIZE,
@@ -35,7 +41,7 @@ const styles = StyleSheet.create({
 	container: {
 		marginHorizontal: MARGIN,
 		alignItems: 'center',
-		backgroundColor: '#f5f5f5',
+		backgroundColor: '#fafafa',
 		borderRadius: 34,
 		padding: MARGIN,
 	},
