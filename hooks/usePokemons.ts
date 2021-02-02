@@ -1,13 +1,10 @@
 import { fetchPokemonInfo } from '@lib/api'
 import { useQuery } from 'react-query'
 
-const usePokemon = (number: number) => {
-	const { data, isLoading } = useQuery(['pokemon', number], () => fetchPokemonInfo(number), { refetchOnMount: false })
+const usePokemons = () => {
+	const { data } = useQuery(['pokemons'], () => fetchPokemonInfo(), { refetchOnMount: false })
 
-	return {
-		loading: isLoading,
-		data,
-	}
+	return data
 }
 
-export default usePokemon
+export default usePokemons

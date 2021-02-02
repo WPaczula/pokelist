@@ -1,27 +1,24 @@
 import React from 'react'
-import { Dimensions, StyleSheet, View, Image, Text } from 'react-native'
-import usePokemon from '@hooks/usePokemons'
+import { Dimensions, StyleSheet, View, Image, Text, Animated } from 'react-native'
+import { PokemonInfo } from '@declarations/pokemon-info'
 
 interface Props {
-	number: number
+	pokemon: PokemonInfo
 }
 
 const { width } = Dimensions.get('window')
 export const ITEM_SIZE = width * 0.5
 const MARGIN = width * 0.05
 
-const PokemonCard = ({ number }: Props) => {
-	const { data, loading } = usePokemon(number)
-
-	if (loading || !data) {
-		return null
-	}
-
+const PokemonCard = ({ pokemon }: Props) => {
 	return (
 		<View style={styles.card}>
 			<View style={styles.container}>
-				<Image source={{ uri: data.image }} style={styles.image} />
-				<Text style={styles.name}>{data.name}</Text>
+				<Image source={{ uri: pokemon.image }} style={styles.image} />
+				<View style={styles.textContainer}>
+					<Text>#{pokemon.number}</Text>
+					<Text style={styles.name}>{pokemon.name}</Text>
+				</View>
 			</View>
 		</View>
 	)
@@ -31,8 +28,8 @@ const styles = StyleSheet.create({
 	name: {
 		textTransform: 'uppercase',
 		fontFamily: 'sans-serif',
-		fontSize: 14,
 		letterSpacing: 2,
+		marginTop: 5,
 	},
 	card: {
 		width: ITEM_SIZE,
@@ -41,18 +38,22 @@ const styles = StyleSheet.create({
 	container: {
 		marginHorizontal: MARGIN,
 		alignItems: 'center',
-		backgroundColor: '#fafafa',
+		backgroundColor: 'white',
 		borderRadius: 34,
 		padding: MARGIN,
 	},
 	image: {
 		width: '100%',
 		aspectRatio: 1,
-		height: ITEM_SIZE,
 		resizeMode: 'contain',
 		margin: 0,
 		backgroundColor: 'transparent',
 		marginBottom: 10,
+	},
+	textContainer: {
+		fontSize: 12,
+		display: 'flex',
+		flexDirection: 'column',
 	},
 })
 

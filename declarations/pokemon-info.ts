@@ -1,5 +1,8 @@
+import { Type } from './types'
+
 export interface PokemonInfo {
-	number: number
+	number: string
 	name: string
 	image: string
+	type: Type
 }

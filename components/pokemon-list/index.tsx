@@ -1,18 +1,22 @@
 import React, { useRef } from 'react'
 import { StyleSheet, View, StatusBar, Animated } from 'react-native'
 import PokemonCard, { ITEM_SIZE } from '@components/pokemon-card'
-
-const POKEMON_NUMBERS = Array(151)
-	.fill(0)
-	.map((_, index) => index + 1)
+import usePokemons from '@hooks/usePokemons'
+import { PokemonInfo } from '@declarations/pokemon-info'
+import Loading from '@components/loading'
 
 const PokemonList = () => {
-	const scrollX = useRef(new Animated.Value(0)).current
+	const scrollX = useRef<Animated.Value>(new Animated.Value(0)).current
+	const pokemons = usePokemons()
+
+	if (!pokemons) {
+		return <Loading />
+	}
 
 	return (
 		<View style={styles.list}>
 			<StatusBar hidden />
-			<Animated.FlatList<number | null>
+			<Animated.FlatList<PokemonInfo | string>
 				onScroll={Animated.event([{ nativeEvent: { contentOffset: { x: scrollX } } }], {
 					useNativeDriver: true,
 				})}
@@ -23,14 +27,15 @@ const PokemonList = () => {
 				snapToInterval={ITEM_SIZE}
 				decelerationRate={0}
 				bounces={false}
-				data={[null, ...POKEMON_NUMBERS, null]}
-				keyExtractor={(item) => String(item)}
-				renderItem={({ item }) => {
-					if (item === null) {
+				data={['left', ...pokemons, 'right']}
+				keyExtractor={(item) => (typeof item === 'string' ? item : item.number)}
+				renderItem={({ item, index }) => {
+					if (typeof item === 'string') {
+						console.log(item)
 						return <View style={styles.spacer} />
 					}
 
-					const inputRange = [(item - 2) * ITEM_SIZE, (item - 1) * ITEM_SIZE, item * ITEM_SIZE]
+					const inputRange = [(index - 2) * ITEM_SIZE, (index - 1) * ITEM_SIZE, index * ITEM_SIZE]
 					const translateY = scrollX.interpolate({
 						inputRange,
 						outputRange: [10, -50, 10],
@@ -41,7 +46,7 @@ const PokemonList = () => {
 					})
 					return (
 						<Animated.View style={{ transform: [{ translateY }, { scale }] }}>
-							<PokemonCard number={item} />
+							<PokemonCard pokemon={item} />
 						</Animated.View>
 					)
 				}}

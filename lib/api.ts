@@ -1,22 +1,43 @@
 import { PokemonInfo } from '@declarations/pokemon-info'
+import { Type } from '@declarations/types'
 
-const baseUrl = 'https://pokeapi.co/api/v2'
+const baseUrl = 'https://graphql-pokemon2.vercel.app'
 
 interface PokemonDto {
+	number: string
 	name: string
-	sprites: {
-		front_default: string
-	}
+	image: string
+	types: string[]
 }
 
-export const fetchPokemonInfo = (number: number): Promise<PokemonInfo> => {
-	return fetch(`${baseUrl}/pokemon/${number}`, {
+const query = `
+query pokemons {
+	pokemons(first: 151) {
+	  number
+	  name
+	  image
+	  types
+	}
+  }
+`
+
+export const fetchPokemonInfo = (): Promise<PokemonInfo[]> => {
+	return fetch(baseUrl, {
+		method: 'POST',
 		headers: { 'Content-Type': 'application/json' },
+		body: JSON.stringify({ query }),
 	})
 		.then((data) => data.json())
-		.then(({ name, sprites }: PokemonDto) => ({
-			name,
-			number,
-			image: sprites.front_default,
-		}))
+		.then(({ data }) => {
+			console.log(data.pokemons)
+			return data.pokemons
+		})
+		.then((pokemons: PokemonDto[]): PokemonInfo[] =>
+			pokemons.map((dto) => ({
+				image: dto.image,
+				name: dto.name,
+				type: dto.types[0].toLowerCase() as Type,
+				number: dto.number,
+			}))
+		)
 }
