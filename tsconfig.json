@@ -13,7 +13,9 @@
 			"@lib/*": ["./lib/*"],
 			"@hooks/*": ["./hooks/*"],
 			"@components/*": ["./components/*"],
-			"@declarations/*": ["declarations/*"]
+			"@declarations/*": ["declarations/*"],
+			"@utils/*": ["utils/*"],
+			"@assets/*": ["assets/*"]
 		}
 	}
 }

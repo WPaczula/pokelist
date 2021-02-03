@@ -4,6 +4,7 @@ import PokemonCard, { ITEM_SIZE } from '@components/pokemon-card'
 import usePokemons from '@hooks/usePokemons'
 import { PokemonInfo } from '@declarations/pokemon-info'
 import Loading from '@components/loading'
+import Backdrop from '@components/backdrop'
 
 const PokemonList = () => {
 	const scrollX = useRef<Animated.Value>(new Animated.Value(0)).current
@@ -16,6 +17,7 @@ const PokemonList = () => {
 	return (
 		<View style={styles.list}>
 			<StatusBar hidden />
+			<Backdrop types={pokemons.map((p) => p.type)} scrollX={scrollX} />
 			<Animated.FlatList<PokemonInfo | string>
 				onScroll={Animated.event([{ nativeEvent: { contentOffset: { x: scrollX } } }], {
 					useNativeDriver: true,
@@ -31,19 +33,19 @@ const PokemonList = () => {
 				keyExtractor={(item) => (typeof item === 'string' ? item : item.number)}
 				renderItem={({ item, index }) => {
 					if (typeof item === 'string') {
-						console.log(item)
 						return <View style={styles.spacer} />
 					}
 
 					const inputRange = [(index - 2) * ITEM_SIZE, (index - 1) * ITEM_SIZE, index * ITEM_SIZE]
 					const translateY = scrollX.interpolate({
 						inputRange,
-						outputRange: [10, -50, 10],
+						outputRange: [80, 20, 80],
 					})
 					const scale = scrollX.interpolate({
 						inputRange,
 						outputRange: [1, 1.25, 1],
 					})
+
 					return (
 						<Animated.View style={{ transform: [{ translateY }, { scale }] }}>
 							<PokemonCard pokemon={item} />

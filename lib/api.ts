@@ -29,7 +29,6 @@ export const fetchPokemonInfo = (): Promise<PokemonInfo[]> => {
 	})
 		.then((data) => data.json())
 		.then(({ data }) => {
-			console.log(data.pokemons)
 			return data.pokemons
 		})
 		.then((pokemons: PokemonDto[]): PokemonInfo[] =>

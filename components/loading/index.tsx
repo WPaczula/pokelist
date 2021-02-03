@@ -1,9 +1,10 @@
 import React from 'react'
-import { View, Text, StyleSheet } from 'react-native'
+import { View, Text, StyleSheet, Image } from 'react-native'
 
 const Loading = () => {
 	return (
 		<View style={styles.container}>
+			<Image source={require('./loading.gif')} style={{ aspectRatio: 1, height: 120, width: 120 }} />
 			<Text style={styles.text}>Loading...</Text>
 		</View>
 	)
