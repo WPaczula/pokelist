@@ -24,10 +24,10 @@ const Backdrop = ({ types, scrollX }: Props) => {
 				removeClippedSubviews={false}
 				contentContainerStyle={{ width, height: BACKDROP_HEIGHT }}
 				renderItem={({ item, index }) => {
-					const inputRange = [index * ITEM_SIZE, (index + 1) * ITEM_SIZE]
-					const translateX = scrollX.interpolate({
+					const inputRange = [(index - 1) * ITEM_SIZE, index * ITEM_SIZE]
+					const opacity = scrollX.interpolate({
 						inputRange,
-						outputRange: [0, width],
+						outputRange: [0, 1],
 					})
 
 					return (
@@ -35,7 +35,7 @@ const Backdrop = ({ types, scrollX }: Props) => {
 							removeClippedSubviews={false}
 							style={{
 								position: 'absolute',
-								transform: [{ translateX }],
+								opacity,
 								overflow: 'hidden',
 								height: BACKDROP_HEIGHT,
 								width,
