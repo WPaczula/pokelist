@@ -1,6 +1,7 @@
 import React from 'react'
 import { Dimensions, StyleSheet, View, Image, Text, Animated } from 'react-native'
 import { PokemonInfo } from '@declarations/pokemon-info'
+import { mapTypeToIcon } from '@utils/image'
 
 interface Props {
 	pokemon: PokemonInfo
@@ -8,39 +9,64 @@ interface Props {
 
 const { width } = Dimensions.get('window')
 export const ITEM_SIZE = width * 0.5
-const MARGIN = width * 0.05
+const MARGIN = width * 0.07
 
 const PokemonCard = ({ pokemon }: Props) => {
 	return (
 		<View style={styles.card}>
 			<View style={styles.container}>
-				<Image source={{ uri: pokemon.image }} style={styles.image} />
-				<View style={styles.textContainer}>
-					<Text>#{pokemon.number}</Text>
-					<Text style={styles.name}>{pokemon.name}</Text>
+				<View style={styles.iconsContainer}>
+					{pokemon.types.map((t) => (
+						<Image key={t} source={mapTypeToIcon(t)} style={styles.icon} />
+					))}
 				</View>
+				<Text style={styles.number}>#{pokemon.number}</Text>
+				<Image source={{ uri: pokemon.image }} style={styles.image} />
+				<Text style={styles.name}>{pokemon.name}</Text>
 			</View>
 		</View>
 	)
 }
 
+const ICON_SIZE = 15
 const styles = StyleSheet.create({
-	name: {
-		textTransform: 'uppercase',
-		fontFamily: 'sans-serif',
-		letterSpacing: 2,
-		marginTop: 5,
-	},
 	card: {
 		width: ITEM_SIZE,
 		height: ITEM_SIZE,
 	},
 	container: {
+		position: 'relative',
 		marginHorizontal: MARGIN,
 		alignItems: 'center',
 		backgroundColor: 'white',
 		borderRadius: 34,
-		padding: MARGIN,
+		paddingHorizontal: 15,
+		paddingVertical: 25,
+	},
+	name: {
+		textTransform: 'uppercase',
+		fontFamily: 'sans-serif',
+		letterSpacing: 1.5,
+		fontSize: 10,
+		marginTop: 5,
+	},
+	iconsContainer: {
+		flexDirection: 'row',
+		position: 'absolute',
+		right: 15,
+		top: 15,
+	},
+	number: {
+		fontSize: 10,
+		color: '#aaa',
+		position: 'absolute',
+		left: 15,
+		top: 15,
+	},
+	icon: {
+		width: ICON_SIZE,
+		height: ICON_SIZE,
+		marginHorizontal: 2,
 	},
 	image: {
 		width: '100%',
@@ -48,12 +74,7 @@ const styles = StyleSheet.create({
 		resizeMode: 'contain',
 		margin: 0,
 		backgroundColor: 'transparent',
-		marginBottom: 10,
-	},
-	textContainer: {
-		fontSize: 12,
-		display: 'flex',
-		flexDirection: 'column',
+		marginVertical: 10,
 	},
 })
 

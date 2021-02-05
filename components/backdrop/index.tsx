@@ -1,7 +1,6 @@
 import { Type } from '@declarations/types'
 import React from 'react'
 import { View, StyleSheet, Dimensions, Image, Animated } from 'react-native'
-import Svg, { Rect } from 'react-native-svg'
 import { LinearGradient } from 'expo-linear-gradient'
 import { mapTypeToImage } from '@utils/image'
 import { FlatList } from 'react-native-gesture-handler'

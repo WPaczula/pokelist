@@ -35,7 +35,7 @@ export const fetchPokemonInfo = (): Promise<PokemonInfo[]> => {
 			pokemons.map((dto) => ({
 				image: dto.image,
 				name: dto.name,
-				type: dto.types[0].toLowerCase() as Type,
+				types: dto.types.filter((t) => t !== 'Flying').map((t) => t.toLowerCase()) as Type[],
 				number: dto.number,
 			}))
 		)

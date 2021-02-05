@@ -17,7 +17,7 @@ const PokemonList = () => {
 	return (
 		<View style={styles.list}>
 			<StatusBar hidden />
-			<Backdrop types={pokemons.map((p) => p.type)} scrollX={scrollX} />
+			<Backdrop types={pokemons.map((p) => p.types[0])} scrollX={scrollX} />
 			<Animated.FlatList<PokemonInfo | string>
 				onScroll={Animated.event([{ nativeEvent: { contentOffset: { x: scrollX } } }], {
 					useNativeDriver: true,
@@ -43,7 +43,7 @@ const PokemonList = () => {
 					})
 					const scale = scrollX.interpolate({
 						inputRange,
-						outputRange: [1, 1.25, 1],
+						outputRange: [0.9, 1.5, 0.9],
 					})
 
 					return (
