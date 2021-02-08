@@ -6,6 +6,7 @@ export type Type =
 	| 'fairy'
 	| 'fighting'
 	| 'fire'
+	| 'flying'
 	| 'ghost'
 	| 'grass'
 	| 'ground'

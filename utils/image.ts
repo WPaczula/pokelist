@@ -6,6 +6,8 @@ export const mapTypeToImage = (type: Type) => {
 			return require('@assets/background/bug.jpg')
 		case 'dark':
 			return require('@assets/background/dark.jpg')
+		case 'dragon':
+			return require('@assets/background/dragon.jpg')
 		case 'electric':
 			return require('@assets/background/electric.jpg')
 		case 'fairy':
@@ -43,6 +45,8 @@ export const mapTypeToIcon = (type: Type) => {
 			return require('@assets/icons/bug.png')
 		case 'dark':
 			return require('@assets/icons/dark.png')
+		case 'dragon':
+			return require('@assets/icons/dragon.png')
 		case 'electric':
 			return require('@assets/icons/electric.png')
 		case 'fairy':
@@ -51,6 +55,8 @@ export const mapTypeToIcon = (type: Type) => {
 			return require('@assets/icons/fighting.png')
 		case 'fire':
 			return require('@assets/icons/fire.png')
+		case 'flying':
+			return require('@assets/icons/flying.png')
 		case 'ghost':
 			return require('@assets/icons/ghost.png')
 		case 'grass':
