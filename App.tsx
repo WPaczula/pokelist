@@ -1,6 +1,6 @@
 import React from 'react'
 import { QueryClientProvider, QueryClient } from 'react-query'
-import PokemonList from '@components/pokemon-list'
+import PokemonList from '@screens/pokemon-list'
 
 const queryClient = new QueryClient()
 

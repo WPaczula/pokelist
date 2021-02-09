@@ -15,7 +15,8 @@
 			"@components/*": ["./components/*"],
 			"@declarations/*": ["declarations/*"],
 			"@utils/*": ["utils/*"],
-			"@assets/*": ["assets/*"]
+			"@assets/*": ["assets/*"],
+			"@screens/*": ["screens/*"],
 		}
 	}
 }
