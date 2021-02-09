@@ -5,4 +5,6 @@ export interface PokemonInfo {
 	name: string
 	image: string
 	types: Type[]
+	weaknesses: Type[]
+	resistant: Type[]
 }

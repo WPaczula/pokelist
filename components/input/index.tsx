@@ -23,7 +23,7 @@ const Input = ({ value, onChange, style, onSave }: Props) => {
 
 const styles = StyleSheet.create({
 	input: {
-		borderColor: '#aaa',
+		borderColor: '#eee',
 		borderWidth: 1,
 		borderRadius: 10,
 		paddingHorizontal: 25,

@@ -1,16 +1,16 @@
-import React, { RefObject, useRef, useState } from 'react'
-import { StyleSheet, View, StatusBar, Animated, Alert, Dimensions } from 'react-native'
+import React, { useRef } from 'react'
+import { StyleSheet, View, StatusBar, Animated } from 'react-native'
 import PokemonCard, { ITEM_SIZE } from '@components/pokemon-card'
 import usePokemons from '@hooks/usePokemons'
 import { PokemonInfo } from '@declarations/pokemon-info'
 import Loading from '@components/loading'
 import Backdrop from '@components/backdrop'
 import Input from '@components/input'
+import Versus from '@components/versus'
+import usePokemonSearch from './usePokemonSearch'
+import useCurrentPokemonIndex from './useCurrentPokemonIndex'
 
 const PokemonList = () => {
-	const [text, setText] = useState('')
-	const ref = useRef<any>()
-
 	const scrollX = useRef<Animated.Value>(new Animated.Value(0)).current
 	const pokemons = usePokemons()
 
@@ -20,18 +20,8 @@ const PokemonList = () => {
 		index,
 	})
 
-	const scrollToPokemon = () => {
-		const pokemonIndex = pokemons?.findIndex(
-			(p) => p.name.toLowerCase().includes(text.toLowerCase()) || p.number.includes(text)
-		)
-
-		if (pokemonIndex === -1 || text === '') {
-			Alert.prompt('No pokemon found')
-			return
-		}
-
-		ref.current.scrollToIndex({ index: pokemonIndex, animated: true })
-	}
+	const { currentIndex, setCurrentPokemon } = useCurrentPokemonIndex()
+	const { searchText, setSearchText, listRef, onSearch } = usePokemonSearch()
 
 	if (!pokemons) {
 		return <Loading />
@@ -45,9 +35,10 @@ const PokemonList = () => {
 				onScroll={Animated.event([{ nativeEvent: { contentOffset: { x: scrollX } } }], {
 					useNativeDriver: true,
 				})}
-				ref={ref}
+				ref={listRef}
 				scrollEventThrottle={16}
 				showsHorizontalScrollIndicator={false}
+				onViewableItemsChanged={setCurrentPokemon}
 				horizontal
 				contentContainerStyle={styles.container}
 				snapToInterval={ITEM_SIZE}
@@ -64,7 +55,7 @@ const PokemonList = () => {
 					const inputRange = [(index - 2) * ITEM_SIZE, (index - 1) * ITEM_SIZE, index * ITEM_SIZE]
 					const translateY = scrollX.interpolate({
 						inputRange,
-						outputRange: [100, 50, 100],
+						outputRange: [180, 100, 180],
 					})
 					const scale = scrollX.interpolate({
 						inputRange,
@@ -78,10 +69,13 @@ const PokemonList = () => {
 					)
 				}}
 			/>
+			{currentIndex && (
+				<Versus resistant={pokemons[currentIndex].resistant} weaknesses={pokemons[currentIndex].weaknesses} />
+			)}
 			<Input
-				value={text}
-				onChange={setText}
-				onSave={scrollToPokemon}
+				value={searchText}
+				onChange={setSearchText}
+				onSave={onSearch}
 				style={{
 					width: '80%',
 					marginBottom: '25%',

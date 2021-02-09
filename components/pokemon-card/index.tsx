@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { memo } from 'react'
 import { Dimensions, StyleSheet, View, Image, Text, Animated } from 'react-native'
 import { PokemonInfo } from '@declarations/pokemon-info'
 import { mapTypeToIcon } from '@utils/image'
@@ -11,7 +11,7 @@ const { width } = Dimensions.get('window')
 export const ITEM_SIZE = width * 0.5
 const MARGIN = width * 0.07
 
-const PokemonCard = ({ pokemon }: Props) => {
+const PokemonCard = memo(({ pokemon }: Props) => {
 	return (
 		<View style={styles.card}>
 			<View style={styles.container}>
@@ -26,7 +26,7 @@ const PokemonCard = ({ pokemon }: Props) => {
 			</View>
 		</View>
 	)
-}
+})
 
 const ICON_SIZE = 15
 const styles = StyleSheet.create({

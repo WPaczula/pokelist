@@ -8,6 +8,8 @@ interface PokemonDto {
 	name: string
 	image: string
 	types: string[]
+	resistant: string[]
+	weaknesses: string[]
 }
 
 const query = `
@@ -17,9 +19,13 @@ query pokemons {
 	  name
 	  image
 	  types
+	  resistant
+	  weaknesses
 	}
   }
 `
+
+const mapToType = (string: string) => string.toLowerCase() as Type
 
 export const fetchPokemonInfo = (): Promise<PokemonInfo[]> => {
 	return fetch(baseUrl, {
@@ -29,14 +35,17 @@ export const fetchPokemonInfo = (): Promise<PokemonInfo[]> => {
 	})
 		.then((data) => data.json())
 		.then(({ data }) => {
+			console.log(data)
 			return data.pokemons
 		})
 		.then((pokemons: PokemonDto[]): PokemonInfo[] =>
 			pokemons.map((dto) => ({
 				image: dto.image,
 				name: dto.name,
-				types: dto.types.map((t) => t.toLowerCase()) as Type[],
+				types: dto.types.map(mapToType),
 				number: dto.number,
+				resistant: dto.resistant.map(mapToType),
+				weaknesses: dto.weaknesses.map(mapToType),
 			}))
 		)
 }
