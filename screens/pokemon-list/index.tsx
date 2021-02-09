@@ -9,8 +9,15 @@ import Input from '@components/input'
 import Versus from '@components/versus'
 import usePokemonSearch from './usePokemonSearch'
 import useCurrentPokemonIndex from './useCurrentPokemonIndex'
+import { NavigationStackProp } from 'react-navigation-stack'
+import { SharedElementsComponentConfig } from 'react-navigation-shared-element'
+import { TouchableWithoutFeedback } from 'react-native-gesture-handler'
 
-const PokemonList = () => {
+interface Props {
+	navigation: NavigationStackProp
+}
+
+const PokemonList = ({ navigation }: Props) => {
 	const scrollX = useRef<Animated.Value>(new Animated.Value(0)).current
 	const pokemons = usePokemons()
 
@@ -64,7 +71,13 @@ const PokemonList = () => {
 
 					return (
 						<Animated.View style={{ transform: [{ translateY }, { scale }] }}>
-							<PokemonCard pokemon={item} />
+							<TouchableWithoutFeedback
+								onPress={() => {
+									navigation.navigate('Details')
+								}}
+							>
+								<PokemonCard pokemon={item} />
+							</TouchableWithoutFeedback>
 						</Animated.View>
 					)
 				}}
@@ -84,6 +97,11 @@ const PokemonList = () => {
 		</View>
 	)
 }
+
+const sharedElements: SharedElementsComponentConfig = (navigation, otherNavigation, showing) => {
+	return []
+}
+PokemonList.sharedElements = sharedElements
 
 const styles = StyleSheet.create({
 	spacer: {
