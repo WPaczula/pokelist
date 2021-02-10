@@ -50,9 +50,6 @@ const Versus = ({ resistant, weaknesses }: Props) => {
 
 const styles = StyleSheet.create({
 	versusContainer: {
-		borderColor: '#eee',
-		borderRadius: 8,
-		borderWidth: 1,
 		padding: 16,
 		width: '80%',
 		marginBottom: 8,

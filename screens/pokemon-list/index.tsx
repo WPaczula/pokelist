@@ -6,9 +6,7 @@ import { PokemonInfo } from '@declarations/pokemon-info'
 import Loading from '@components/loading'
 import Backdrop from '@components/backdrop'
 import Input from '@components/input'
-import Versus from '@components/versus'
 import usePokemonSearch from './usePokemonSearch'
-import useCurrentPokemonIndex from './useCurrentPokemonIndex'
 import { NavigationStackProp } from 'react-navigation-stack'
 import { SharedElementsComponentConfig } from 'react-navigation-shared-element'
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler'
@@ -27,7 +25,6 @@ const PokemonList = ({ navigation }: Props) => {
 		index,
 	})
 
-	const { currentIndex, setCurrentPokemon } = useCurrentPokemonIndex()
 	const { searchText, setSearchText, listRef, onSearch } = usePokemonSearch()
 
 	if (!pokemons) {
@@ -45,7 +42,6 @@ const PokemonList = ({ navigation }: Props) => {
 				ref={listRef}
 				scrollEventThrottle={16}
 				showsHorizontalScrollIndicator={false}
-				onViewableItemsChanged={setCurrentPokemon}
 				horizontal
 				contentContainerStyle={styles.container}
 				snapToInterval={ITEM_SIZE}
@@ -73,7 +69,7 @@ const PokemonList = ({ navigation }: Props) => {
 						<Animated.View style={{ transform: [{ translateY }, { scale }] }}>
 							<TouchableWithoutFeedback
 								onPress={() => {
-									navigation.navigate('Details')
+									navigation.navigate('Details', { item })
 								}}
 							>
 								<PokemonCard pokemon={item} />
@@ -82,9 +78,6 @@ const PokemonList = ({ navigation }: Props) => {
 					)
 				}}
 			/>
-			{currentIndex && (
-				<Versus resistant={pokemons[currentIndex].resistant} weaknesses={pokemons[currentIndex].weaknesses} />
-			)}
 			<Input
 				value={searchText}
 				onChange={setSearchText}

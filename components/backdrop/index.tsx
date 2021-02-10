@@ -12,7 +12,19 @@ interface Props {
 }
 
 const { width, height } = Dimensions.get('window')
-const BACKDROP_HEIGHT = height * 0.6
+export const BACKDROP_HEIGHT = height * 0.6
+
+export const BackdropImage = ({ type }: { type: Type }) => (
+	<Image
+		source={mapTypeToImage(type)}
+		style={{
+			width,
+			height: BACKDROP_HEIGHT,
+			position: 'absolute',
+		}}
+	/>
+)
+export const BackdropGradient = () => <LinearGradient colors={['transparent', 'white']} style={styles.gradient} />
 
 const Backdrop = ({ types, scrollX }: Props) => {
 	return (
@@ -40,19 +52,12 @@ const Backdrop = ({ types, scrollX }: Props) => {
 								width,
 							}}
 						>
-							<Image
-								source={mapTypeToImage(item)}
-								style={{
-									width,
-									height: BACKDROP_HEIGHT,
-									position: 'absolute',
-								}}
-							/>
+							<BackdropImage type={item} />
 						</Animated.View>
 					)
 				}}
 			></FlatList>
-			<LinearGradient colors={['transparent', 'white']} style={styles.gradient} />
+			<BackdropGradient />
 		</View>
 	)
 }
