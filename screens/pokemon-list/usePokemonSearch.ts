@@ -11,10 +11,15 @@ const usePokemonSearch = (pokemons?: PokemonInfo[]) => {
 			(p) => p.name.toLowerCase().includes(searchText.toLowerCase()) || p.number.includes(searchText)
 		)
 
-		if (pokemonIndex === -1 || searchText === '') {
+		if (!searchText) {
+			return
+		}
+
+		if (pokemonIndex === undefined || pokemonIndex === -1) {
 			Alert.prompt('No pokemon found')
 			return
 		}
+		console.log(pokemonIndex)
 
 		listRef.current.scrollToIndex({ index: pokemonIndex, animated: true })
 		setSearchText('')

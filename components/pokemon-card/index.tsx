@@ -55,6 +55,7 @@ const styles = StyleSheet.create({
 		fontFamily: 'sans-serif',
 		letterSpacing: 1.5,
 		fontSize: 12,
+		color: '#777',
 		marginTop: 9,
 	},
 	iconsContainer: {

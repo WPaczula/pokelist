@@ -14,8 +14,6 @@ interface EntryProps {
 	title: string
 }
 const Entry = ({ types, title }: EntryProps) => {
-	return null
-
 	const [currentTypes, setCurrentTypes] = useState(types)
 
 	const fadeAnim = useRef(new Animated.Value(1)).current

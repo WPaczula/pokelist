@@ -7,6 +7,7 @@ import { BackdropImage } from '@components/backdrop'
 import Versus from '@components/versus'
 import { SharedElement } from 'react-navigation-shared-element'
 import { mapTypeToIcon } from '@utils/image'
+import { AntDesign } from '@expo/vector-icons'
 
 const { width, height } = Dimensions.get('window')
 interface Props {
@@ -14,13 +15,22 @@ interface Props {
 	route: any
 }
 
-const PokemonDetails = ({ route }: Props) => {
+const PokemonDetails = ({ route, navigation }: Props) => {
 	const pokemon: PokemonInfo = route.params.item
 
 	return (
 		<View style={styles.container}>
 			<View style={styles.backgroundContainer}>
 				<BackdropImage type={pokemon.types[0]} />
+				<AntDesign
+					name="back"
+					size={36}
+					color="white"
+					style={styles.backIcon}
+					onPress={() => {
+						navigation.goBack()
+					}}
+				/>
 			</View>
 			<View style={styles.card}>
 				<SharedElement id={`pokemon.${pokemon.name}.types`} style={styles.iconsContainer}>
@@ -36,14 +46,19 @@ const PokemonDetails = ({ route }: Props) => {
 				<SharedElement id={`pokemon.${pokemon.name}.image`} style={{ marginTop: 90 }}>
 					<Image source={{ uri: pokemon.image }} style={styles.image} />
 				</SharedElement>
-				<Text style={styles.name}>{pokemon.name}</Text>
 				<Versus resistant={pokemon.resistant} weaknesses={pokemon.weaknesses} />
+				<Text style={styles.name}>{pokemon.name}</Text>
 			</View>
 		</View>
 	)
 }
 
 const styles = StyleSheet.create({
+	backIcon: {
+		position: 'absolute',
+		top: 25,
+		left: 25,
+	},
 	backgroundContainer: {
 		position: 'relative',
 		top: 0,
@@ -61,8 +76,8 @@ const styles = StyleSheet.create({
 		fontFamily: 'sans-serif',
 		letterSpacing: 2,
 		fontSize: 24,
-		marginTop: 24,
 		marginBottom: 16,
+		color: '#777',
 	},
 	iconsContainer: {
 		flexDirection: 'row',

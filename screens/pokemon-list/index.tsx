@@ -25,7 +25,7 @@ const PokemonList = ({ navigation }: Props) => {
 		index,
 	})
 
-	const { searchText, setSearchText, listRef, onSearch } = usePokemonSearch()
+	const { searchText, setSearchText, listRef, onSearch } = usePokemonSearch(pokemons)
 
 	if (!pokemons) {
 		return <Loading />
