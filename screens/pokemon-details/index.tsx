@@ -1,10 +1,12 @@
 import React from 'react'
-import { View, Dimensions, StyleSheet, Image } from 'react-native'
+import { View, Dimensions, StyleSheet, Image, Text } from 'react-native'
 import { NavigationStackProp } from 'react-navigation-stack'
 import { SharedElementsComponentConfig } from 'react-navigation-shared-element'
 import { PokemonInfo } from '@declarations/pokemon-info'
-import { BackdropGradient, BackdropImage, BACKDROP_HEIGHT } from '@components/backdrop'
+import { BackdropImage } from '@components/backdrop'
 import Versus from '@components/versus'
+import { SharedElement } from 'react-navigation-shared-element'
+import { mapTypeToIcon } from '@utils/image'
 
 const { width, height } = Dimensions.get('window')
 interface Props {
@@ -13,17 +15,29 @@ interface Props {
 }
 
 const PokemonDetails = ({ route }: Props) => {
-	const item: PokemonInfo = route.params.item
+	const pokemon: PokemonInfo = route.params.item
 
 	return (
 		<View style={styles.container}>
 			<View style={styles.backgroundContainer}>
-				<BackdropImage type={item.types[0]} />
-				<BackdropGradient />
+				<BackdropImage type={pokemon.types[0]} />
 			</View>
 			<View style={styles.card}>
-				<Image source={{ uri: item.image }} style={styles.image} />
-				<Versus resistant={item.resistant} weaknesses={item.weaknesses} />
+				<SharedElement id={`pokemon.${pokemon.name}.types`} style={styles.iconsContainer}>
+					<>
+						{pokemon.types.map((t) => (
+							<Image key={t} source={mapTypeToIcon(t)} style={styles.icon} />
+						))}
+					</>
+				</SharedElement>
+				<SharedElement id={`pokemon.${pokemon.name}.number`} style={styles.numberContainer}>
+					<Text style={styles.number}>#{pokemon.number}</Text>
+				</SharedElement>
+				<SharedElement id={`pokemon.${pokemon.name}.image`} style={{ marginTop: 90 }}>
+					<Image source={{ uri: pokemon.image }} style={styles.image} />
+				</SharedElement>
+				<Text style={styles.name}>{pokemon.name}</Text>
+				<Versus resistant={pokemon.resistant} weaknesses={pokemon.weaknesses} />
 			</View>
 		</View>
 	)
@@ -34,7 +48,7 @@ const styles = StyleSheet.create({
 		position: 'relative',
 		top: 0,
 		bottom: 0,
-		height: BACKDROP_HEIGHT,
+		height,
 		width,
 	},
 	container: {
@@ -42,12 +56,40 @@ const styles = StyleSheet.create({
 		width,
 		position: 'relative',
 	},
+	name: {
+		textTransform: 'uppercase',
+		fontFamily: 'sans-serif',
+		letterSpacing: 2,
+		fontSize: 24,
+		marginTop: 24,
+		marginBottom: 16,
+	},
+	iconsContainer: {
+		flexDirection: 'row',
+		position: 'absolute',
+		right: 35,
+		top: 35,
+	},
+	numberContainer: {
+		position: 'absolute',
+		left: 35,
+		top: 35,
+	},
+	number: {
+		fontSize: 25,
+		color: '#aaa',
+	},
+	icon: {
+		width: 35,
+		height: 35,
+		marginHorizontal: 2,
+	},
 	card: {
 		backgroundColor: 'white',
 		borderRadius: 64,
 		position: 'absolute',
-		top: '20%',
-		bottom: '20%',
+		top: '15%',
+		bottom: '15%',
 		left: '10%',
 		right: '10%',
 		display: 'flex',
@@ -55,11 +97,28 @@ const styles = StyleSheet.create({
 		alignItems: 'center',
 		padding: 16,
 	},
-	image: { aspectRatio: 1, height: '60%', width: '60%', resizeMode: 'contain' },
+	image: { aspectRatio: 1, width: 240, resizeMode: 'contain' },
 })
 
-const sharedElements: SharedElementsComponentConfig = (navigation, otherNavigation, showing) => {
-	return []
+const sharedElements: SharedElementsComponentConfig = (route) => {
+	const pokemon: PokemonInfo = route.params.item
+
+	return [
+		{
+			id: `pokemon.${pokemon.name}.image`,
+			animation: 'move',
+			resize: 'clip',
+			align: 'center-bottom',
+		},
+		{
+			id: `pokemon.${pokemon.name}.types`,
+			animation: 'fade',
+		},
+		{
+			id: `pokemon.${pokemon.name}.number`,
+			animation: 'fade',
+		},
+	]
 }
 PokemonDetails.sharedElements = sharedElements
 

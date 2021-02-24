@@ -14,6 +14,8 @@ interface EntryProps {
 	title: string
 }
 const Entry = ({ types, title }: EntryProps) => {
+	return null
+
 	const [currentTypes, setCurrentTypes] = useState(types)
 
 	const fadeAnim = useRef(new Animated.Value(1)).current
@@ -32,7 +34,7 @@ const Entry = ({ types, title }: EntryProps) => {
 			<Text style={styles.text}>{title}</Text>
 			<Animated.View style={{ ...styles.iconsContainer, opacity: fadeAnim }}>
 				{currentTypes.map((t) => (
-					<Image source={mapTypeToIcon(t)} style={styles.icon} />
+					<Image source={mapTypeToIcon(t)} key={t} style={styles.icon} />
 				))}
 			</Animated.View>
 		</View>
