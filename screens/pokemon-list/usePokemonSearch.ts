@@ -21,7 +21,7 @@ const usePokemonSearch = (pokemons?: PokemonInfo[]) => {
 		}
 		console.log(pokemonIndex)
 
-		listRef.current.scrollToIndex({ index: pokemonIndex, animated: true })
+		listRef.current.scrollToIndex({ index: pokemonIndex })
 		setSearchText('')
 	}
 

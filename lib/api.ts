@@ -6,7 +6,6 @@ const baseUrl = 'https://graphql-pokemon2.vercel.app'
 interface PokemonDto {
 	number: string
 	name: string
-	image: string
 	types: string[]
 	resistant: string[]
 	weaknesses: string[]
@@ -17,7 +16,6 @@ query pokemons {
 	pokemons(first: 151) {
 	  number
 	  name
-	  image
 	  types
 	  resistant
 	  weaknesses
@@ -39,7 +37,7 @@ export const fetchPokemonInfo = (): Promise<PokemonInfo[]> => {
 		})
 		.then((pokemons: PokemonDto[]): PokemonInfo[] =>
 			pokemons.map((dto) => ({
-				image: dto.image,
+				image: `https://raw.githubusercontent.com/HybridShivam/Pokemon/master/assets/images/${dto.number}.png`,
 				name: dto.name,
 				types: dto.types.map(mapToType),
 				number: dto.number,

@@ -1,4 +1,4 @@
-import React, { useRef } from 'react'
+import React, { useCallback, useRef } from 'react'
 import { StyleSheet, View, StatusBar, Animated } from 'react-native'
 import PokemonCard, { ITEM_SIZE } from '@components/pokemon-card'
 import usePokemons from '@hooks/usePokemons'
@@ -31,6 +31,34 @@ const PokemonList = ({ navigation }: Props) => {
 		return <Loading />
 	}
 
+	const renderItem = useCallback(({ item, index }) => {
+		if (typeof item === 'string') {
+			return <View style={styles.spacer} />
+		}
+
+		const inputRange = [(index - 2) * ITEM_SIZE, (index - 1) * ITEM_SIZE, index * ITEM_SIZE]
+		const translateY = scrollX.interpolate({
+			inputRange,
+			outputRange: [180, 100, 180],
+		})
+		const scale = scrollX.interpolate({
+			inputRange,
+			outputRange: [0.9, 1.5, 0.9],
+		})
+
+		return (
+			<Animated.View style={{ transform: [{ translateY }, { scale }] }}>
+				<TouchableWithoutFeedback
+					onPress={() => {
+						navigation.navigate('Details', { item })
+					}}
+				>
+					<PokemonCard pokemon={item} />
+				</TouchableWithoutFeedback>
+			</Animated.View>
+		)
+	}, [])
+
 	return (
 		<View style={styles.list}>
 			<StatusBar hidden />
@@ -42,7 +70,9 @@ const PokemonList = ({ navigation }: Props) => {
 				ref={listRef}
 				scrollEventThrottle={16}
 				showsHorizontalScrollIndicator={false}
+				removeClippedSubviews
 				horizontal
+				windowSize={6}
 				contentContainerStyle={styles.container}
 				snapToInterval={ITEM_SIZE}
 				decelerationRate={0}
@@ -50,33 +80,7 @@ const PokemonList = ({ navigation }: Props) => {
 				bounces={false}
 				data={['left', ...pokemons, 'right']}
 				keyExtractor={(item) => (typeof item === 'string' ? item : item.number)}
-				renderItem={({ item, index }) => {
-					if (typeof item === 'string') {
-						return <View style={styles.spacer} />
-					}
-
-					const inputRange = [(index - 2) * ITEM_SIZE, (index - 1) * ITEM_SIZE, index * ITEM_SIZE]
-					const translateY = scrollX.interpolate({
-						inputRange,
-						outputRange: [180, 100, 180],
-					})
-					const scale = scrollX.interpolate({
-						inputRange,
-						outputRange: [0.9, 1.5, 0.9],
-					})
-
-					return (
-						<Animated.View style={{ transform: [{ translateY }, { scale }] }}>
-							<TouchableWithoutFeedback
-								onPress={() => {
-									navigation.navigate('Details', { item })
-								}}
-							>
-								<PokemonCard pokemon={item} />
-							</TouchableWithoutFeedback>
-						</Animated.View>
-					)
-				}}
+				renderItem={renderItem}
 			/>
 			<Input
 				value={searchText}
