@@ -6,13 +6,21 @@ interface Props {
 	value: string
 	style?: TextStyle
 	onSave: () => void
+	onFocus?: () => void
+	onBlur?: () => void
 }
 
-const Input = ({ value, onChange, style, onSave }: Props) => {
+const Input = ({ value, onChange, onFocus = () => {}, onBlur = () => {}, style, onSave }: Props) => {
+	const handleBlur = () => {
+		onSave()
+		onBlur()
+	}
+
 	return (
 		<TextInput
-			onBlur={onSave}
-			onEndEditing={onSave}
+			onFocus={onFocus}
+			onBlur={handleBlur}
+			onEndEditing={handleBlur}
 			style={[styles.input, style]}
 			value={value}
 			onChangeText={onChange}

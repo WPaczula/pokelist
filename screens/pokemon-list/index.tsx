@@ -1,4 +1,4 @@
-import React, { useCallback, useRef } from 'react'
+import React, { useCallback, useRef, useState } from 'react'
 import { StyleSheet, View, StatusBar, Animated } from 'react-native'
 import PokemonCard, { ITEM_SIZE } from '@components/pokemon-card'
 import usePokemons from '@hooks/usePokemons'
@@ -18,6 +18,7 @@ interface Props {
 const PokemonList = ({ navigation }: Props) => {
 	const scrollX = useRef<Animated.Value>(new Animated.Value(0)).current
 	const pokemons = usePokemons()
+	const [inputFocused, setInputFocused] = useState(false)
 
 	const getItemLayout = (_: (string | PokemonInfo)[] | null | undefined, index: number) => ({
 		length: ITEM_SIZE,
@@ -35,11 +36,11 @@ const PokemonList = ({ navigation }: Props) => {
 		const inputRange = [(index - 2) * ITEM_SIZE, (index - 1) * ITEM_SIZE, index * ITEM_SIZE]
 		const translateY = scrollX.interpolate({
 			inputRange,
-			outputRange: [180, 100, 180],
+			outputRange: [140, 60, 140],
 		})
 		const scale = scrollX.interpolate({
 			inputRange,
-			outputRange: [0.9, 1.5, 0.9],
+			outputRange: [0.7, 1.7, 0.7],
 		})
 
 		return (
@@ -86,9 +87,15 @@ const PokemonList = ({ navigation }: Props) => {
 				value={searchText}
 				onChange={setSearchText}
 				onSave={onSearch}
+				onBlur={() => {
+					setInputFocused(false)
+				}}
+				onFocus={() => {
+					setInputFocused(true)
+				}}
 				style={{
 					width: '80%',
-					marginBottom: '25%',
+					marginVertical: 16,
 				}}
 			/>
 		</View>

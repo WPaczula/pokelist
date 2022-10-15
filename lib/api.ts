@@ -13,7 +13,7 @@ interface PokemonDto {
 
 const query = `
 query pokemons {
-	pokemons(first: 151) {
+	pokemons(first: 300) {
 	  number
 	  name
 	  types
