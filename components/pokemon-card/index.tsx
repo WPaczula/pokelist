@@ -16,16 +16,14 @@ const PokemonCard = memo(({ pokemon }: Props) => {
 	return (
 		<View style={styles.card}>
 			<View style={styles.container}>
-				<SharedElement id={`pokemon.${pokemon.name}.types`} style={styles.iconsContainer}>
-					<>
-						{pokemon.types.map((t) => (
-							<Image key={t} source={mapTypeToIcon(t)} style={styles.icon} />
-						))}
-					</>
-				</SharedElement>
-				<SharedElement id={`pokemon.${pokemon.name}.number`} style={styles.numberContainer}>
+				<View style={styles.iconsContainer}>
+					{pokemon.types.map((t) => (
+						<Image key={t} source={mapTypeToIcon(t)} style={styles.icon} />
+					))}
+				</View>
+				<View style={styles.numberContainer}>
 					<Text style={styles.number}>#{pokemon.number}</Text>
-				</SharedElement>
+				</View>
 				<SharedElement id={`pokemon.${pokemon.name}.image`}>
 					<Image source={{ uri: pokemon.image }} style={styles.image} />
 				</SharedElement>

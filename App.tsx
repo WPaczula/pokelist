@@ -8,7 +8,7 @@ import { createSharedElementStackNavigator } from 'react-navigation-shared-eleme
 
 const queryClient = new QueryClient()
 
-const Stack = createSharedElementStackNavigator({})
+const Stack = createSharedElementStackNavigator()
 
 const options = {
 	headerBackTitleVisible: false,
@@ -27,7 +27,19 @@ export default function App() {
 			<NavigationContainer theme={{ ...DefaultTheme, colors: { ...DefaultTheme.colors, background: 'white' } }}>
 				<Stack.Navigator screenOptions={{ headerShown: false }} mode={'card'}>
 					<Stack.Screen component={PokemonList} name={'List'} options={options} />
-					<Stack.Screen component={PokemonDetails} name={'Details'} options={options} />
+					<Stack.Screen
+						component={PokemonDetails}
+						name={'Details'}
+						options={options}
+						sharedElements={(route) => {
+							const { item } = route.params
+							return [
+								`pokemon.${item.name}.types`,
+								`pokemon.${item.name}.number`,
+								`pokemon.${item.name}.image`,
+							]
+						}}
+					/>
 				</Stack.Navigator>
 			</NavigationContainer>
 		</QueryClientProvider>

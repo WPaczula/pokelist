@@ -50,7 +50,6 @@ const Versus = ({ resistant, weaknesses }: Props) => {
 
 const styles = StyleSheet.create({
 	versusContainer: {
-		padding: 16,
 		width: '80%',
 		marginBottom: 8,
 	},

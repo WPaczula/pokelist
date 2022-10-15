@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, Dimensions, StyleSheet, Image, Text } from 'react-native'
+import { View, Dimensions, StyleSheet, Image, Text, TouchableWithoutFeedback } from 'react-native'
 import { NavigationStackProp } from 'react-navigation-stack'
 import { SharedElementsComponentConfig } from 'react-navigation-shared-element'
 import { PokemonInfo } from '@declarations/pokemon-info'
@@ -7,7 +7,6 @@ import { BackdropImage } from '@components/backdrop'
 import Versus from '@components/versus'
 import { SharedElement } from 'react-navigation-shared-element'
 import { mapTypeToIcon } from '@utils/image'
-import { AntDesign } from '@expo/vector-icons'
 
 const { width, height } = Dimensions.get('window')
 interface Props {
@@ -20,40 +19,60 @@ const PokemonDetails = ({ route, navigation }: Props) => {
 
 	return (
 		<View style={styles.container}>
-			<View style={styles.backgroundContainer}>
-				<BackdropImage type={pokemon.types[0]} />
-				<AntDesign
-					name="back"
-					size={36}
-					color="white"
-					style={styles.backIcon}
-					onPress={() => {
-						navigation.goBack()
-					}}
-				/>
-			</View>
-			<View style={styles.card}>
-				<SharedElement id={`pokemon.${pokemon.name}.types`} style={styles.iconsContainer}>
-					<>
-						{pokemon.types.map((t) => (
-							<Image key={t} source={mapTypeToIcon(t)} style={styles.icon} />
-						))}
-					</>
-				</SharedElement>
-				<SharedElement id={`pokemon.${pokemon.name}.number`} style={styles.numberContainer}>
-					<Text style={styles.number}>#{pokemon.number}</Text>
-				</SharedElement>
-				<SharedElement id={`pokemon.${pokemon.name}.image`} style={{ marginTop: 90 }}>
-					<Image source={{ uri: pokemon.image }} style={styles.image} />
-				</SharedElement>
-				<Versus resistant={pokemon.resistant} weaknesses={pokemon.weaknesses} />
-				<Text style={styles.name}>{pokemon.name}</Text>
-			</View>
+			<>
+				<View style={styles.backgroundContainer}>
+					<BackdropImage type={pokemon.types[0]} />
+				</View>
+				<View style={styles.card}>
+					<View style={styles.topBox}>
+						<View style={styles.numberContainer}>
+							<Text style={styles.number}>#{pokemon.number}</Text>
+						</View>
+						<View style={styles.iconsContainer}>
+							<>
+								{pokemon.types.map((t) => (
+									<Image key={t} source={mapTypeToIcon(t)} style={styles.icon} />
+								))}
+							</>
+						</View>
+					</View>
+					<SharedElement id={`pokemon.${pokemon.name}.image`} style={{ marginTop: 90 }}>
+						<TouchableWithoutFeedback onPress={() => navigation.goBack()}>
+							<Image source={{ uri: pokemon.image }} style={styles.image} />
+						</TouchableWithoutFeedback>
+					</SharedElement>
+					<View style={styles.bottomBox}>
+						<Text style={styles.name}>{pokemon.name}</Text>
+						<Versus resistant={pokemon.resistant} weaknesses={pokemon.weaknesses} />
+					</View>
+				</View>
+			</>
 		</View>
 	)
 }
 
 const styles = StyleSheet.create({
+	topBox: {
+		display: 'flex',
+		justifyContent: 'space-between',
+		alignItems: 'center',
+		padding: 8,
+		borderRadius: 64,
+		backgroundColor: 'white',
+		flexDirection: 'row',
+		width: '90%',
+		marginTop: 64,
+	},
+	bottomBox: {
+		display: 'flex',
+		alignItems: 'center',
+		padding: 8,
+		borderRadius: 8,
+		backgroundColor: 'white',
+		borderColor: '#ddd',
+		borderWidth: 1,
+		width: '100%',
+	},
 	backIcon: {
 		position: 'absolute',
 		top: 25,
@@ -76,23 +95,17 @@ const styles = StyleSheet.create({
 		fontFamily: 'sans-serif',
 		letterSpacing: 2,
 		fontSize: 24,
-		marginBottom: 16,
+		margin: 8,
 		color: '#777',
 	},
 	iconsContainer: {
 		flexDirection: 'row',
-		position: 'absolute',
-		right: 35,
-		top: 35,
 	},
-	numberContainer: {
-		position: 'absolute',
-		left: 35,
-		top: 35,
-	},
+	numberContainer: {},
 	number: {
 		fontSize: 25,
 		color: '#aaa',
+		marginLeft: 4,
 	},
 	icon: {
 		width: 35,
@@ -100,19 +113,16 @@ const styles = StyleSheet.create({
 		marginHorizontal: 2,
 	},
 	card: {
-		backgroundColor: 'white',
-		borderRadius: 64,
 		position: 'absolute',
-		top: '15%',
-		bottom: '15%',
-		left: '10%',
-		right: '10%',
+		top: 0,
+		bottom: 0,
+		left: 0,
+		right: 0,
 		display: 'flex',
-		justifyContent: 'center',
+		justifyContent: 'space-between',
 		alignItems: 'center',
-		padding: 16,
 	},
-	image: { aspectRatio: 1, width: 240, resizeMode: 'contain' },
+	image: { aspectRatio: 1, width: '80%', resizeMode: 'contain', marginBottom: 64 },
 })
 
 const sharedElements: SharedElementsComponentConfig = (route) => {
@@ -124,14 +134,6 @@ const sharedElements: SharedElementsComponentConfig = (route) => {
 			animation: 'move',
 			resize: 'clip',
 			align: 'center-bottom',
-		},
-		{
-			id: `pokemon.${pokemon.name}.types`,
-			animation: 'fade',
-		},
-		{
-			id: `pokemon.${pokemon.name}.number`,
-			animation: 'fade',
 		},
 	]
 }

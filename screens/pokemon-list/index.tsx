@@ -27,11 +27,7 @@ const PokemonList = ({ navigation }: Props) => {
 
 	const { searchText, setSearchText, listRef, onSearch } = usePokemonSearch(pokemons)
 
-	if (!pokemons) {
-		return <Loading />
-	}
-
-	const renderItem = useCallback(({ item, index }) => {
+	const renderItem = useCallback(({ item, index }: { item: PokemonInfo | string; index: number }) => {
 		if (typeof item === 'string') {
 			return <View style={styles.spacer} />
 		}
@@ -59,6 +55,10 @@ const PokemonList = ({ navigation }: Props) => {
 		)
 	}, [])
 
+	if (!pokemons) {
+		return <Loading />
+	}
+
 	return (
 		<View style={styles.list}>
 			<StatusBar hidden />
@@ -75,7 +75,7 @@ const PokemonList = ({ navigation }: Props) => {
 				windowSize={6}
 				contentContainerStyle={styles.container}
 				snapToInterval={ITEM_SIZE}
-				decelerationRate={0}
+				decelerationRate={0.8}
 				getItemLayout={getItemLayout}
 				bounces={false}
 				data={['left', ...pokemons, 'right']}
